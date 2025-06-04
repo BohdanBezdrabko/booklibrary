@@ -15,9 +15,11 @@ import {
   SelectChangeEvent,
 } from '@mui/material';
 import authService from '../services/authService';
+import { useAuth } from '../context/AuthContext';
 
 const Register: React.FC = () => {
   const navigate = useNavigate();
+  const { login } = useAuth();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -78,13 +80,22 @@ const Register: React.FC = () => {
     }
 
     try {
-      await authService.register({
+      const response = await authService.register({
         name: formData.name,
         email: formData.email,
         password: formData.password,
         role: formData.role as 'USER' | 'ADMIN',
         ...(formData.role === 'ADMIN' && { secretKey: formData.secretKey })
       });
+      
+      // Оновлюємо інформацію в AuthContext
+      if (response.token) {
+        const userData = authService.getUser();
+        if (userData) {
+          login(userData);
+        }
+      }
+      
       navigate('/');
     } catch (err: any) {
       setError(err.response?.data?.message || 'Registration failed. Please try again.');

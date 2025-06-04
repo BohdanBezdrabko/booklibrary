@@ -1,32 +1,12 @@
 import React from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
-import { ThemeProvider, createTheme, Container } from '@mui/material';
+import { ThemeProvider, Container, Box } from '@mui/material';
 import CssBaseline from '@mui/material/CssBaseline';
 import { AuthProvider } from './context/AuthContext';
 import Navbar from './components/Navbar';
 import AppRoutes from './routes';
-
-const theme = createTheme({
-  palette: {
-    primary: {
-      main: '#1976d2',
-    },
-    secondary: {
-      main: '#dc004e',
-    },
-  },
-  typography: {
-    fontFamily: [
-      '-apple-system',
-      'BlinkMacSystemFont',
-      '"Segoe UI"',
-      'Roboto',
-      '"Helvetica Neue"',
-      'Arial',
-      'sans-serif',
-    ].join(','),
-  },
-});
+import theme from './theme';
+import './App.css';
 
 const App: React.FC = () => {
   return (
@@ -34,10 +14,51 @@ const App: React.FC = () => {
       <CssBaseline />
       <Router>
         <AuthProvider>
-          <Navbar />
-          <Container maxWidth="lg" sx={{ mt: 4 }}>
-            <AppRoutes />
-          </Container>
+          <div className="App">
+            <Navbar />
+            <Box
+              component="main"
+              sx={{
+                pt: 10,
+                pb: 6,
+                minHeight: 'calc(100vh - 64px)',
+                position: 'relative',
+                zIndex: 1,
+                marginTop: '64px', // Додаємо відступ зверху для фіксованого хедера
+              }}
+            >
+              <Container maxWidth="lg" sx={{ position: 'relative' }}>
+                <AppRoutes />
+              </Container>
+            </Box>
+            {/* Decorative elements */}
+            <Box
+              sx={{
+                position: 'fixed',
+                top: '20%',
+                left: '-10%',
+                width: '20vw',
+                height: '20vw',
+                borderRadius: '50%',
+                background: 'radial-gradient(circle, rgba(142,36,170,0.1) 0%, rgba(142,36,170,0) 70%)',
+                zIndex: 0,
+                pointerEvents: 'none',
+              }}
+            />
+            <Box
+              sx={{
+                position: 'fixed',
+                bottom: '10%',
+                right: '-5%',
+                width: '15vw',
+                height: '15vw',
+                borderRadius: '50%',
+                background: 'radial-gradient(circle, rgba(0,229,255,0.1) 0%, rgba(0,229,255,0) 70%)',
+                zIndex: 0,
+                pointerEvents: 'none',
+              }}
+            />
+          </div>
         </AuthProvider>
       </Router>
     </ThemeProvider>

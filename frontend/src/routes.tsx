@@ -5,6 +5,7 @@ import Register from './pages/Register';
 import BookList from './components/BookList/BookList';
 import BookDetails from './pages/BookDetails';
 import ReadBook from './pages/ReadBook';
+import HomePage from './pages/HomePage';
 import ProtectedRoute from './components/ProtectedRoute';
 import { useAuth } from './context/AuthContext';
 
@@ -23,6 +24,14 @@ const AppRoutes: React.FC = () => {
       />
       <Route
         path="/"
+        element={
+          <ProtectedRoute>
+            <HomePage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/my-books"
         element={
           <ProtectedRoute>
             <BookList />

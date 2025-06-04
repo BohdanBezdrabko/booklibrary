@@ -56,7 +56,8 @@ class ReadingService {
       // Try to get from backend first
       const userId = localStorage.getItem('user_id');
       if (userId) {
-        const response = await api.get(`${this.API_URL}/${userId}`);
+        const encodedUserId = encodeURIComponent(userId);
+        const response = await api.get(`${this.API_URL}/${encodedUserId}`);
         const progressList = response.data;
         const bookProgress = progressList.find((p: any) => p.bookId === bookId);
         if (bookProgress) {
@@ -87,7 +88,8 @@ class ReadingService {
       // Try to get from backend first
       const userId = localStorage.getItem('user_id');
       if (userId) {
-        const response = await api.get(`${this.API_URL}/${userId}`);
+        const encodedUserId = encodeURIComponent(userId);
+        const response = await api.get(`${this.API_URL}/${encodedUserId}`);
         const progressList = response.data;
         progressList.forEach((p: any) => {
           progress[p.bookId] = {
@@ -125,7 +127,9 @@ class ReadingService {
       // Clear from backend
       const userId = localStorage.getItem('user_id');
       if (userId) {
-        await api.delete(`${this.API_URL}/${userId}/${bookId}`);
+        const encodedUserId = encodeURIComponent(userId);
+        const encodedBookId = encodeURIComponent(bookId);
+        await api.delete(`${this.API_URL}/${encodedUserId}/${encodedBookId}`);
       }
     } catch (error) {
       console.error('Error clearing reading progress from backend:', error);
